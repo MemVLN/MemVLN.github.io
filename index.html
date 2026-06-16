@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MemVLN: Streaming Episodic Memory for Vision-Language Navigation</title>
+    <meta
+      name="description"
+      content="MemVLN is a streaming episodic memory framework for vision-language navigation with persistent navigation memory, geometry-aware perception, and real-world G1 deployment."
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary navigation">
+      <a class="brand" href="#top">MemVLN</a>
+      <nav>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#demos">Demos</a>
+        <a href="#bibtex">BibTeX</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-label="MemVLN project hero">
+        <video class="hero-media" autoplay muted loop playsinline poster="assets/images/poster-rxr-1-hero-16x9.png">
+          <source src="assets/videos/rxr_1_hero_16x9.mp4" type="video/mp4">
+        </video>
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <h1 aria-label="MemVLN">
+            <span class="title-main">Mem</span><span class="title-accent">VLN</span>
+          </h1>
+          <p class="subtitle">Streaming Episodic Memory for Vision-Language Navigation</p>
+          <p class="summary">
+            MemVLN gives streaming VLM navigators a
+            <span class="text-emphasis">persistent, compact memory</span> of the full route history,
+            improving <span class="text-emphasis">long-horizon instruction following</span>
+            in simulation and on a real G1 robot.
+          </p>
+          <div class="hero-actions" aria-label="Paper links">
+            <a class="button primary" href="assets/papers/MemVLN-paper.pdf">Paper</a>
+            <a class="button secondary" href="assets/papers/MemVLN-supp.pdf">Supplement</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section intro">
+        <div class="section-kicker">Overview</div>
+        <h2>Persistent navigation memory for streaming video.</h2>
+        <p>
+          Vision-language navigation asks an embodied agent to follow language instructions through
+          3D environments. Recent VLM-based agents operate on
+          <span class="text-emphasis teal">monocular streaming video</span>, but their
+          <span class="text-emphasis">long-horizon reasoning</span> is bottlenecked by the absence of
+          <span class="text-emphasis teal">persistent episodic memory</span>. MemVLN addresses this
+          gap with a memory bank that stores compressed perceptual features together with
+          spatio-temporal context, and a memory perceiver that retrieves fixed-size memory tokens
+          for action prediction.
+        </p>
+      </section>
+
+      <section class="wide-figure" aria-label="MemVLN teaser">
+        <img src="assets/images/teaser.png" alt="MemVLN overview teaser showing streaming episodic memory for navigation">
+      </section>
+
+      <section class="section contribution-grid" aria-label="Key contributions">
+        <article>
+          <span>01</span>
+          <h3>Streaming episodic memory</h3>
+          <p>
+            A memory bank accumulates visual features, timestep, and odometry through the whole
+            episode, then consolidates similar consecutive frames when capacity is reached.
+          </p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Compact memory tokens</h3>
+          <p>
+            A memory perceiver retrieves 300 compact memory tokens through cross-attention, letting
+            the VLM reason over history without reprocessing raw long videos.
+          </p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Geometry-aware perception</h3>
+          <p>
+            StreamVGGT features are adapted into the VLM feature space, enriching local spatial
+            understanding while preserving a streaming inference interface.
+          </p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Memory-focused supervision</h3>
+          <p>
+            Masked trajectory summarization and sub-trajectory decomposition force the model to
+            reconstruct route semantics from memory alone.
+          </p>
+        </article>
+      </section>
+
+      <section class="section method" id="method">
+        <div class="section-kicker">Method</div>
+        <h2>Short-term perception plus long-horizon episodic recall.</h2>
+        <p>
+          MemVLN combines Qwen3-VL-4B, SigLIP visual features, StreamVGGT geometry tokens, and a
+          <span class="text-emphasis teal">plug-in memory module</span>. At each step, the LLM
+          receives <span class="text-emphasis">memory tokens</span>, recent local visual context,
+          the current observation, and the language instruction, then autoregressively predicts the
+          next navigation action.
+        </p>
+        <figure class="paper-figure">
+          <img src="assets/images/method.png" alt="MemVLN model overview with visual encoder, geometry encoder, memory module, and LLM">
+        </figure>
+        <div class="method-steps" aria-label="MemVLN pipeline">
+          <div>
+            <strong>Write</strong>
+            <p>Append each observation feature with timestep and odometry into the episode memory bank.</p>
+          </div>
+          <div>
+            <strong>Compress</strong>
+            <p>Merge similar consecutive frames and downsample patch features with ToMe for bounded cost.</p>
+          </div>
+          <div>
+            <strong>Retrieve</strong>
+            <p>Use spatially and temporally grounded queries to retrieve fixed-size memory tokens.</p>
+          </div>
+          <div>
+            <strong>Act</strong>
+            <p>Condition the VLM on memory, local context, current view, and instruction for action prediction.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section results" id="results">
+        <div class="section-kicker">Results</div>
+        <h2>State-of-the-art performance without external navigation data.</h2>
+        <p>
+          MemVLN is trained on the
+          <span class="text-emphasis teal">official R2R and RxR training splits only</span>. On
+          VLN-CE Val-Unseen, it achieves strong controlled-comparison performance on both datasets
+          and shows its largest gains on
+          <span class="text-emphasis">longer, more complex RxR trajectories</span>.
+        </p>
+
+        <div class="metric-grid" aria-label="Simulation metrics">
+          <article class="metric-card">
+            <p>R2R Val-Unseen</p>
+            <strong>55.0</strong>
+            <span>SR, with 50.5 SPL and 61.2 OSR</span>
+          </article>
+          <article class="metric-card">
+            <p>RxR Val-Unseen</p>
+            <strong>55.4</strong>
+            <span>SR, with 48.4 SPL and 64.6 nDTW</span>
+          </article>
+          <article class="metric-card">
+            <p>Real-world G1</p>
+            <strong>46.7</strong>
+            <span>SR after post-training with 24 demonstrations</span>
+          </article>
+        </div>
+
+        <div class="table-wrap" aria-label="Result tables">
+          <table>
+            <caption>VLN-CE Val-Unseen controlled comparison</caption>
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>NE ↓</th>
+                <th>OS/SR ↑</th>
+                <th>SPL ↑</th>
+                <th>nDTW ↑</th>
+                <th>External data</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>R2R</td>
+                <td>5.19</td>
+                <td>61.2 OS / 55.0 SR</td>
+                <td>50.5</td>
+                <td>—</td>
+                <td>0K</td>
+              </tr>
+              <tr>
+                <td>RxR</td>
+                <td>5.59</td>
+                <td>55.4 SR</td>
+                <td>48.4</td>
+                <td>64.6</td>
+                <td>0K</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table>
+            <caption>Real-world G1 deployment</caption>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Runs</th>
+                <th>Successes</th>
+                <th>SR ↑</th>
+                <th>CR ↓</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Base</td>
+                <td>30</td>
+                <td>5</td>
+                <td>16.7</td>
+                <td>56.7</td>
+              </tr>
+              <tr>
+                <td>+Mem</td>
+                <td>30</td>
+                <td>9</td>
+                <td>30.0</td>
+                <td>66.7</td>
+              </tr>
+              <tr>
+                <td>MemVLN</td>
+                <td>30</td>
+                <td>12</td>
+                <td>40.0</td>
+                <td>46.7</td>
+              </tr>
+              <tr>
+                <td>MemVLN-PT</td>
+                <td>30</td>
+                <td>14</td>
+                <td>46.7</td>
+                <td>46.7</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="wide-figure analysis-figure" aria-label="Long-horizon and real-world analysis">
+        <img src="assets/images/analysis.png" alt="Long-horizon and real-world analysis for MemVLN">
+      </section>
+
+      <section class="section demos" id="demos">
+        <div class="section-kicker">Demos</div>
+        <h2>Simulation rollouts and real-world robot deployment.</h2>
+        <p>
+          The demos below use the supplementary videos:
+          <span class="text-emphasis teal">R2R and RxR qualitative rollouts</span>, plus paired
+          first-person and third-person views from
+          <span class="text-emphasis">real-world G1 navigation</span>.
+        </p>
+
+        <div class="video-grid wide-videos" aria-label="Simulation demo videos">
+          <article class="video-card">
+            <video controls playsinline preload="metadata" poster="assets/images/poster-r2r-1.png">
+              <source src="assets/videos/r2r_1.mp4" type="video/mp4">
+            </video>
+            <h3>R2R rollout 1</h3>
+          </article>
+          <article class="video-card">
+            <video controls playsinline preload="metadata" poster="assets/images/poster-r2r-2.png">
+              <source src="assets/videos/r2r_2.mp4" type="video/mp4">
+            </video>
+            <h3>R2R rollout 2</h3>
+          </article>
+          <article class="video-card">
+            <video controls playsinline preload="metadata" poster="assets/images/poster-rxr-1.png">
+              <source src="assets/videos/rxr_1.mp4" type="video/mp4">
+            </video>
+            <h3>RxR rollout 1</h3>
+          </article>
+          <article class="video-card">
+            <video controls playsinline preload="metadata" poster="assets/images/poster-rxr-2.png">
+              <source src="assets/videos/rxr_2.mp4" type="video/mp4">
+            </video>
+            <h3>RxR rollout 2</h3>
+          </article>
+        </div>
+
+        <div class="robot-videos" aria-label="Real-world demo videos">
+          <article class="video-card">
+            <video controls playsinline preload="metadata" poster="assets/images/poster-first-1.png">
+              <source src="assets/videos/first_perspective_1.mp4" type="video/mp4">
+            </video>
+            <h3>First-person view 1</h3>
+          </article>
+          <article class="video-card square">
+            <video controls playsinline preload="metadata" poster="assets/images/poster-third-1.png">
+              <source src="assets/videos/third_perspective_1.mp4" type="video/mp4">
+            </video>
+            <h3>Third-person view 1</h3>
+          </article>
+          <article class="video-card">
+            <video controls playsinline preload="metadata" poster="assets/images/poster-first-2.png">
+              <source src="assets/videos/first_perspective_2.mp4" type="video/mp4">
+            </video>
+            <h3>First-person view 2</h3>
+          </article>
+          <article class="video-card square">
+            <video controls playsinline preload="metadata" poster="assets/images/poster-third-2.png">
+              <source src="assets/videos/third_perspective_2.mp4" type="video/mp4">
+            </video>
+            <h3>Third-person view 2</h3>
+          </article>
+        </div>
+      </section>
+
+      <section class="section supplement" aria-label="Supplementary visualizations">
+        <div class="section-kicker">Supplement</div>
+        <h2>Qualitative examples from R2R and RxR.</h2>
+        <div class="supp-grid">
+          <figure>
+            <img src="assets/images/supp-r2r.png" alt="Supplementary R2R qualitative examples">
+            <figcaption>R2R qualitative examples</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/supp-rxr.png" alt="Supplementary RxR qualitative examples">
+            <figcaption>RxR qualitative examples</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section bibtex" id="bibtex">
+        <div class="section-kicker">Citation</div>
+        <h2>BibTeX</h2>
+        <pre><code>@inproceedings{memvln2026,
+  title     = {MemVLN: Streaming Episodic Memory for Vision-Language Navigation},
+  author    = {Anonymous Authors},
+  booktitle = {Conference on Robot Learning},
+  year      = {2026}
+}</code></pre>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>MemVLN: Streaming Episodic Memory for Vision-Language Navigation</span>
+      <a href="#top">Back to top</a>
+    </footer>
+  </body>
+</html>

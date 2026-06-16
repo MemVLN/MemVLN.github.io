@@ -1,0 +1,6 @@
+.DS_Store
+Thumbs.db
+
+# Superseded hero crops kept locally for comparison, but not used by the page.
+assets/images/poster-rxr-1-hero.png
+assets/videos/rxr_1_hero.mp4
