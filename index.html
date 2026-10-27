@@ -114,7 +114,10 @@
       </section>
 
       <section class="wide-figure teaser-figure" aria-label="MemVLN teaser">
-        <img src="assets/images/teaser.png" alt="MemVLN overview teaser showing streaming episodic memory for navigation">
+        <img
+          src="assets/images/teaser.png?v=db1937333dbd"
+          alt="MemVLN teaser comparing memory designs and showing RxR performance gains and real-world navigation"
+        >
       </section>
 
       <section class="section contribution-grid" aria-label="Key contributions">
@@ -156,14 +159,18 @@
         <div class="section-kicker">Method</div>
         <h2>Short-term perception plus long-horizon episodic recall.</h2>
         <p>
-          MemVLN combines Qwen3-VL-4B, SigLIP visual features, StreamVGGT geometry tokens, and a
+          MemVLN combines Qwen3-VL-4B with its native vision encoder, a frozen StreamVGGT geometry
+          encoder, and a
           <span class="text-emphasis teal">plug-in memory module</span>. At each step, the LLM
           receives <span class="text-emphasis">memory tokens</span>, recent local visual context,
           the current observation, and the language instruction, then autoregressively predicts the
           next navigation action.
         </p>
         <figure class="paper-figure">
-          <img src="assets/images/method.png" alt="MemVLN model overview with visual encoder, geometry encoder, memory module, and LLM">
+          <img
+            src="assets/images/method.png?v=9b1d2e99d235"
+            alt="MemVLN architecture with the Qwen3-VL vision encoder, StreamVGGT, memory consolidation and retrieval, and instruction or action prediction"
+          >
         </figure>
         <div class="method-steps" aria-label="MemVLN pipeline">
           <div>

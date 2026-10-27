@@ -12,6 +12,19 @@ python3 -m http.server 8026 --bind 127.0.0.1
 
 Then open <http://127.0.0.1:8026/>.
 
+## Paper Figures
+
+The teaser and method images are rendered directly from the original figure PDFs
+in the [arXiv:2610.35066v1 LaTeX source archive](https://arxiv.org/src/2610.35066v1):
+
+| Website image | Source figure |
+| --- | --- |
+| `assets/images/teaser.png` | `figures/VLN_teaser.pdf` |
+| `assets/images/method.png` | `figures/VLN_model.pdf` |
+
+Both PNGs use the PDF crop box and a width of 3200 pixels. The image URLs in
+`index.html` include a content hash to refresh cached copies after an update.
+
 ## Deployment
 
 The public project page is hosted at <https://memvln.github.io/> using GitHub
