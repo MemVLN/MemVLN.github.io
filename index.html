@@ -8,11 +8,16 @@
       name="description"
       content="MemVLN is a streaming episodic memory framework for vision-language navigation with persistent navigation memory, geometry-aware perception, and real-world G1 deployment."
     >
+    <meta name="theme-color" content="#061a3b">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="site-header" aria-label="Primary navigation">
-      <a class="brand" href="#top">MemVLN</a>
+      <a class="brand" href="#top" aria-label="MemVLN home">
+        <img src="assets/images/logo.png" alt="">
+        <span>MemVLN</span>
+      </a>
       <nav>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
@@ -28,39 +33,87 @@
         </video>
         <div class="hero-shade"></div>
         <div class="hero-content">
-          <h1 aria-label="MemVLN">
-            <span class="title-main">Mem</span><span class="title-accent">VLN</span>
-          </h1>
-          <p class="subtitle">Streaming Episodic Memory for Vision-Language Navigation</p>
-          <p class="summary">
-            MemVLN gives streaming VLM navigators a
-            <span class="text-emphasis">persistent, compact memory</span> of the full route history,
-            improving <span class="text-emphasis">long-horizon instruction following</span>
-            in simulation and on a real G1 robot.
-          </p>
-          <div class="hero-actions" aria-label="Paper links">
-            <a class="button primary" href="assets/papers/MemVLN-paper.pdf">Paper</a>
-            <a class="button secondary" href="assets/papers/MemVLN-supp.pdf">Supplement</a>
+          <div class="hero-copy">
+            <h1 aria-label="MemVLN">
+              <span class="title-main">Mem</span><span class="title-accent">VLN</span>
+            </h1>
+            <p class="subtitle">Streaming Episodic Memory for Vision-Language Navigation</p>
+
+            <div class="hero-authors" aria-label="Authors">
+              <div class="author-list">
+                <span class="author">
+                  <a href="https://yanwang-ai.github.io/" target="_blank" rel="noopener noreferrer">
+                    Yan Wang<sup>1,*</sup>
+                  </a>
+                </span>
+                <span class="author">
+                  <a href="https://huangjy-pku.github.io/" target="_blank" rel="noopener noreferrer">
+                    Jiangyong Huang<sup>1,2,*</sup>
+                  </a>
+                </span>
+                <span class="author">
+                  <a href="https://siyuanhuang.com/" target="_blank" rel="noopener noreferrer">
+                    Siyuan Huang<sup>1,†</sup>
+                  </a>
+                </span>
+                <span class="author">
+                  <a href="https://buzz-beater.github.io/" target="_blank" rel="noopener noreferrer">
+                    Baoxiong Jia<sup>1,†</sup>
+                  </a>
+                </span>
+              </div>
+              <div class="author-affiliations" aria-label="Affiliations">
+                <span><sup>1</sup> State Key Laboratory of General Artificial Intelligence, BIGAI</span>
+                <span><sup>2</sup> Peking University</span>
+              </div>
+              <p class="author-notes">
+                <span><sup>*</sup> Equal contribution</span>
+                <span><sup>†</sup> Corresponding authors</span>
+              </p>
+            </div>
+
+            <div class="hero-actions" aria-label="Project links">
+              <a class="button primary" href="assets/papers/MemVLN-paper.pdf">Paper</a>
+              <a
+                class="button code"
+                href="https://github.com/MemVLN/MemVLN"
+                target="_blank"
+                rel="noopener noreferrer"
+              >Code</a>
+              <a class="button secondary" href="assets/papers/MemVLN-supp.pdf">Supplement</a>
+              <a class="button secondary" href="https://huggingface.co/Yannnnnnnn/MemVLN" target="_blank" rel="noopener noreferrer">Checkpoint</a>
+              <a class="button secondary" href="https://huggingface.co/datasets/Yannnnnnnn/MemVLN-data" target="_blank" rel="noopener noreferrer">Data</a>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="section intro">
-        <div class="section-kicker">Overview</div>
-        <h2>Persistent navigation memory for streaming video.</h2>
-        <p>
-          Vision-language navigation asks an embodied agent to follow language instructions through
-          3D environments. Recent VLM-based agents operate on
-          <span class="text-emphasis teal">monocular streaming video</span>, but their
-          <span class="text-emphasis">long-horizon reasoning</span> is bottlenecked by the absence of
-          <span class="text-emphasis teal">persistent episodic memory</span>. MemVLN addresses this
-          gap with a memory bank that stores compressed perceptual features together with
-          spatio-temporal context, and a memory perceiver that retrieves fixed-size memory tokens
-          for action prediction.
-        </p>
+      <section class="section intro" aria-label="MemVLN overview">
+        <div class="intro-card">
+          <div class="intro-logo">
+            <img
+              src="assets/images/memvln-repo-artwork-v7.svg"
+              alt="MemVLN navigation and episodic-memory logo"
+            >
+          </div>
+          <div class="intro-copy">
+            <div class="section-kicker">Overview</div>
+            <h2>Persistent navigation memory for streaming video.</h2>
+            <p>
+              Vision-language navigation asks an embodied agent to follow language instructions through
+              3D environments. Recent VLM-based agents operate on
+              <span class="text-emphasis teal">monocular streaming video</span>, but their
+              <span class="text-emphasis">long-horizon reasoning</span> is bottlenecked by the absence of
+              <span class="text-emphasis teal">persistent episodic memory</span>. MemVLN addresses this
+              gap with a memory bank that stores compressed perceptual features together with
+              spatio-temporal context, and a memory perceiver that retrieves fixed-size memory tokens
+              for action prediction.
+            </p>
+          </div>
+        </div>
       </section>
 
-      <section class="wide-figure" aria-label="MemVLN teaser">
+      <section class="wide-figure teaser-figure" aria-label="MemVLN teaser">
         <img src="assets/images/teaser.png" alt="MemVLN overview teaser showing streaming episodic memory for navigation">
       </section>
 
@@ -326,18 +379,23 @@
       <section class="section bibtex" id="bibtex">
         <div class="section-kicker">Citation</div>
         <h2>BibTeX</h2>
-        <pre><code>@inproceedings{memvln2026,
+        <pre><code>@misc{wang2026memvln,
   title     = {MemVLN: Streaming Episodic Memory for Vision-Language Navigation},
-  author    = {Anonymous Authors},
-  booktitle = {Conference on Robot Learning},
+  author    = {Wang, Yan and Huang, Jiangyong and Huang, Siyuan and Jia, Baoxiong},
   year      = {2026}
 }</code></pre>
       </section>
     </main>
 
     <footer class="site-footer">
-      <span>MemVLN: Streaming Episodic Memory for Vision-Language Navigation</span>
-      <a href="#top">Back to top</a>
+      <div class="footer-brand">
+        <img src="assets/images/logo.png" alt="">
+        <span>MemVLN: Streaming Episodic Memory for Vision-Language Navigation</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/MemVLN/MemVLN" target="_blank" rel="noopener noreferrer">Code</a>
+        <a href="#top">Back to top</a>
+      </div>
     </footer>
   </body>
 </html>

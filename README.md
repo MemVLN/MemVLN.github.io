@@ -12,10 +12,13 @@ Then open <http://127.0.0.1:8026/>.
 
 ## Deployment
 
-This repository is ready for GitHub Pages deployment via the included workflow in
-`.github/workflows/pages.yml`.
+The public project page is hosted at <https://memvln.github.io/> using GitHub
+Pages. The workflow in `.github/workflows/pages.yml` deploys the static files
+without a build step.
 
-Because this repository is currently private, GitHub Pages may require either an
-upgraded GitHub plan or making the repository public before the workflow can
-deploy. While keeping the repository private, the same static files can also be
-deployed through Vercel, Netlify, or Cloudflare Pages with no build step.
+After pushing an update to `main`, deploy it from the workflow's **Run workflow**
+button, or run:
+
+```bash
+gh workflow run pages.yml --repo MemVLN/MemVLN.github.io --ref main
+```
