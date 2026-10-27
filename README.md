@@ -2,6 +2,8 @@
 
 Static project page for **MemVLN: Streaming Episodic Memory for Vision-Language Navigation**.
 
+[Project page](https://memvln.github.io/) · [Paper: arXiv:2610.35066](https://arxiv.org/abs/2610.35066)
+
 ## Local Preview
 
 ```bash
